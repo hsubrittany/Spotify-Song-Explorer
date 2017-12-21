@@ -6,7 +6,7 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
-
+const config = require('./constants.js')
 var request = require('request'); // "Request" library
 
 var client_id = '460ce5d55d8445c98685f4690e3a1fe8'; // Your client id

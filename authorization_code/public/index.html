@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Song Explorer</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -19,11 +19,13 @@
   <body>
     <div class="container">
       <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
+        <h1>Welcome to Song Explorer!</h1>
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
       <div id="loggedin">
         <div id="user-profile">
+        </div>
+        <div id="top-artists">
         </div>
         <div id="oauth">
         </div>
@@ -46,6 +48,29 @@
             <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
             <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
             <dt>Country</dt><dd>{{country}}</dd>
+          </dl>
+        </div>
+      </div>
+    </script>
+
+    <script id="top-artists-template" type="text/x-handlebars-template">
+      <h1>Your Favorite Artists</h1>
+      <div class="media">
+        <!-- <div class="pull-left">
+          <img class="media-object" width="150" src="{{images.0.url}}" />
+        </div> -->
+        <div class="media-body">
+          <dl class="dl-horizontal">
+            <dt>Artist 1</dt><dd class="clearfix">{{items.0.name}}</dd>
+            <dt>Image Url</dt><dd class="clearfix"><a href="{{items.0.images.0.url}}">{{items.0.images.0.url}}</a></dd>
+            <dt>Artist 2</dt><dd class="clearfix">{{items.1.name}}</dd>
+            <dt>Image Url</dt><dd class="clearfix"><a href="{{items.1.images.0.url}}">{{items.1.images.0.url}}</a></dd>
+            <dt>Artist 3</dt><dd class="clearfix">{{items.2.name}}</dd>
+            <dt>Image Url</dt><dd class="clearfix"><a href="{{items.2.images.0.url}}">{{items.2.images.0.url}}</a></dd>
+            <dt>Artist 4</dt><dd class="clearfix">{{items.3.name}}</dd>
+            <dt>Image Url</dt><dd class="clearfix"><a href="{{items.3.images.0.url}}">{{items.3.images.0.url}}</a></dd>
+
+
           </dl>
         </div>
       </div>
@@ -83,6 +108,10 @@
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
 
+        var topArtistsSource = document.getElementById('top-artists-template').innerHTML,
+            topArtistsTemplate = Handlebars.compile(topArtistsSource),
+            topArtistsPlaceholder = document.getElementById('top-artists');
+
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
@@ -110,6 +139,19 @@
                 },
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+
+                  $('#login').hide();
+                  $('#loggedin').show();
+                }
+            });
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/top/artists?limit=4',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+
+                  topArtistsPlaceholder.innerHTML = topArtistsTemplate(response);
 
                   $('#login').hide();
                   $('#loggedin').show();
