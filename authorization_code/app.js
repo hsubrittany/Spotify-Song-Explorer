@@ -130,18 +130,23 @@ app.get('/callback', function(req, res) {
         };
 
         var artistID = "";
+        var artistName = "";
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           console.log("all artists");
           console.log(body);
-          console.log("first artist uri")
-          artistID = body.items[0].uri;
-          console.log(artistID);
-          relatedArtists(artistID.substring(15));
+          // console.log("artist")
+          for(i = 0; i < 4; i++) {
+            artistID = body.items[i].uri;
+            artistName = body.items[i].name;
+            // console.log(artistID);
+            relatedArtists(artistID.substring(15),artistName);
+
+          }
 
         });
-        function relatedArtists(artistID) {
+        function relatedArtists(artistID, artistName) {
           var options2 = {
             url: 'https://api.spotify.com/v1/artists/'+artistID+'/related-artists',
             headers: { 'Authorization': 'Bearer ' + access_token },
@@ -150,8 +155,11 @@ app.get('/callback', function(req, res) {
 
           // use the access token to access the Spotify Web API
           request.get(options2, function(error, response, body) {
-            console.log("displaying FIRST TOP ARTISTS related artist.");
-            console.log(body);
+            console.log(artistName+"\'s related artists:");
+            for(i = 0; i < 4; i++) {
+              console.log(body.artists[i].name);
+            }
+            console.log(" ");
           });
         }
 
