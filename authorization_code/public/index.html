@@ -29,13 +29,14 @@
         </div>
         <div id="oauth">
         </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
+        <!-- <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button> -->
       </div>
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
-      <div class="media">
+      <h1>Welcome, {{display_name}}</h1>
+      <p>Wassup my dude</p>
+      <!-- <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
         </div>
@@ -50,7 +51,7 @@
             <dt>Country</dt><dd>{{country}}</dd>
           </dl>
         </div>
-      </div>
+      </div> -->
     </script>
 
     <script id="top-artists-template" type="text/x-handlebars-template">
@@ -63,12 +64,16 @@
           <dl class="dl-horizontal">
             <dt>Artist 1</dt><dd class="clearfix">{{items.0.name}}</dd>
             <dt>Image Url</dt><dd class="clearfix"><a href="{{items.0.images.0.url}}">{{items.0.images.0.url}}</a></dd>
+            <div><img class="media-object" width="150" src="{{items.0.images.0.url}}" /></div>
             <dt>Artist 2</dt><dd class="clearfix">{{items.1.name}}</dd>
             <dt>Image Url</dt><dd class="clearfix"><a href="{{items.1.images.0.url}}">{{items.1.images.0.url}}</a></dd>
+            <div><img class="media-object" width="150" src="{{items.1.images.0.url}}" /></div>
             <dt>Artist 3</dt><dd class="clearfix">{{items.2.name}}</dd>
             <dt>Image Url</dt><dd class="clearfix"><a href="{{items.2.images.0.url}}">{{items.2.images.0.url}}</a></dd>
+            <div><img class="media-object" width="150" src="{{items.2.images.0.url}}" /></div>
             <dt>Artist 4</dt><dd class="clearfix">{{items.3.name}}</dd>
             <dt>Image Url</dt><dd class="clearfix"><a href="{{items.3.images.0.url}}">{{items.3.images.0.url}}</a></dd>
+            <div><img class="media-object" width="150" src="{{items.3.images.0.url}}" /></div>
 
 
           </dl>
@@ -77,11 +82,11 @@
     </script>
 
     <script id="oauth-template" type="text/x-handlebars-template">
-      <h2>oAuth info</h2>
+      <!-- <h2>oAuth info</h2>
       <dl class="dl-horizontal">
         <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
         <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}></dd>
-      </dl>
+      </dl> -->
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
