@@ -134,8 +134,8 @@ app.get('/callback', function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log("all artists");
-          console.log(body);
+          // console.log("all artists");
+          // console.log(body);
           // console.log("artist")
           for(i = 0; i < 4; i++) {
             artistID = body.items[i].uri;

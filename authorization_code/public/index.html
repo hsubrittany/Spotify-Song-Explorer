@@ -51,33 +51,42 @@
     </script>
 
     <script id="top-artists-template" type="text/x-handlebars-template">
-      <h2>Your Favorite Artists</h2>
-      <div class="media">
-        <div class="container">
+      <h2>Your favorite artists</h2>
+
+      <div class="container">
+
           <div class="row justify-content-center">
-            <div class="col-md no-padding">
-              <h4 class="clearfix">{{items.0.name}}</h4>
-              <div><img class="media-object" width="250" src="{{items.0.images.0.url}}" /></div>
-            </div>
+            {{#each items}}
 
             <div class="col-md no-padding">
-              <h4 class="clearfix">{{items.1.name}}</h4>
-              <div><img class="media-object" width="250" src="{{items.1.images.0.url}}" /></div>
-            </div>
+              <h4 class="clearfix">{{this.name}}</h4>
+              <div><img class="media-object" width="250" src="{{this.images.0.url}}" /></div>
 
-            <div class="col-md no-padding">
-              <h4 class="clearfix">{{items.2.name}}</h4>
-              <div><img class="media-object" width="250" src="{{items.2.images.0.url}}" /></div>
             </div>
+            {{/each}}
 
-            <div class="col-md no-padding">
-              <h4 class="clearfix">{{items.3.name}}</h4>
-              <div><img class="media-object" width="250" src="{{items.3.images.0.url}}" /></div>
-            </div>
-          </div>
         </div>
       </div>
+
     </script>
+
+
+    <!-- <script id="related-artists-template-partial" type="text/x-handlebars-template">
+      <div class="related">
+        <h4 class="clearfix">{{artists.0.name}}</h4>
+        <div><img class="media-object" width="250" src="{{artists.0.images.0.url}}" /></div>
+
+        <h4 class="clearfix">{{artists.1.name}}</h4>
+        <div><img class="media-object" width="250" src="{{artists.1.images.0.url}}" /></div>
+
+        <h4 class="clearfix">{{artists.2.name}}</h4>
+        <div><img class="media-object" width="250" src="{{artists.2.images.0.url}}" /></div>
+
+        <h4 class="clearfix">{{artists.3.name}}</h4>
+        <div><img class="media-object" width="250" src="{{artists.3.images.0.url}}" /></div>
+      </div>
+
+    </script> -->
 
 
 
@@ -118,6 +127,10 @@
             topArtistsTemplate = Handlebars.compile(topArtistsSource),
             topArtistsPlaceholder = document.getElementById('top-artists');
 
+        // var relatedArtistsSource = document.getElementById('related-artists-template-partial').innerHTML,
+        //     relatedArtistsTemplate = Handlebars.compile(relatedArtistsSource),
+        //     relatedArtistsPlaceholder = document.getElementById('related-artists');
+
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
@@ -128,10 +141,13 @@
             refresh_token = params.refresh_token,
             error = params.error;
 
+
+
         if (error) {
           alert('There was an error during the authentication');
         } else {
           if (access_token) {
+            var topArtistList;
             // render oauth info
             oauthPlaceholder.innerHTML = oauthTemplate({
               access_token: access_token,
@@ -159,10 +175,33 @@
 
                   topArtistsPlaceholder.innerHTML = topArtistsTemplate(response);
 
+
+                  $.each(response.items, function(arrayID, group) {
+                    $.ajax({
+                        url: 'https://api.spotify.com/v1/artists/'+ group.uri.substring(15) +'/related-artists',
+                        headers: {
+                          'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function(response) {
+
+                          // relatedArtistsPlaceholder.innerHTML = relatedArtistsTemplate(response);
+
+                          // document.getElementById("sadBoi").innerHTML = "HI BITTTTTCCCHHH";
+                          $('#login').hide();
+                          $('#loggedin').show();
+                        }
+                    });
+                    // document.getElementById("sadBoi").innerHTML += group.uri;
+
+                  });
+
+
                   $('#login').hide();
                   $('#loggedin').show();
+                  ///
                 }
             });
+
 
 
           } else {
